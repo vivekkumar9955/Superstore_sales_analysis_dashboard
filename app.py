@@ -2,9 +2,14 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+import plotly.express as px
 from streamlit_option_menu import option_menu
 from common import show_header, show_kpis, show_filters
-
+from helper import state_abbrev
+from sales import sales_view
+from trends import trends_view
+from locations import locations_view
+from category import category_view
 # --- PAGE CONFIG ---
 st.set_page_config(page_title="Superstore Sales Dashboard", page_icon="📊", layout="wide")
 
@@ -71,56 +76,27 @@ if selected == "Home":
     st.dataframe(filtered_data)
 
 elif selected == "Sales":
-    st.subheader("💰 Sales Analysis")
-    col1, col2 = st.columns([1, 1])
-
-    with col1:
-        # Group data by Category (Sum of Sales)
-        category_by_sales = (
-            filtered_data.groupby("Category")["Sales"]
-            .sum()
-            .reset_index()
-            .sort_values(by="Sales", ascending=False)
-        )
-
-        # Create figure
-        fig, ax = plt.subplots(figsize=(6, 4))
-        sns.barplot(
-            data=category_by_sales,
-            x="Category",
-            y="Sales",
-            palette="pastel",
-            ax=ax
-        )
-
-        ax.set_title("Sales by Category", fontsize=14, fontweight='bold')
-        ax.set_xlabel("Category", fontsize=12)
-        ax.set_ylabel("Sales ($)", fontsize=12)
-
-        # Add values on bars
-        for i, v in enumerate(category_by_sales["Sales"]):
-            ax.text(i, v + 5000, f"${v:,.0f}", ha='center', fontweight='bold')
-
-        st.pyplot(fig)
-
-    with col2:
-        st.write("📊 You can add another visualization here (e.g., profit by category).")
+    #data come from sales.py
+    sales_view(filtered_data)
 
 elif selected == "Trends":
-    st.subheader("📈 Trends Over Time")
-    st.write("Display time-series trends for sales and profits here.")
+    trends_view(filtered_data)
+
+
+
+
 
 elif selected == "Category":
-    st.subheader("📦 Category Performance")
-    st.write("Analyze product categories and their contributions here.")
+    category_view(filtered_data)
+
 
 elif selected == "Product":
     st.subheader("🛍️ Product Insights")
     st.write("Explore product-wise performance metrics here.")
 
 elif selected == "Location":
-    st.subheader("🌍 Location Analysis")
-    st.write("Study region-wise and city-wise performance data here.")
+    locations_view(filtered_data)
+
 
 elif selected == "Shipping":
     st.subheader("🚚 Shipping Performance")

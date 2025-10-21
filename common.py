@@ -1,6 +1,6 @@
 import streamlit as st
 from datetime import datetime
-from helper import kpi_total_sales ,kpi_tatal_profit ,kpi_top_category
+from helper import kpi_total_sales ,kpi_tatal_profit ,kpi_top_category ,get_states_by_region ,get_city_by_states
 import pandas as pd
 
 data = pd.read_csv('data/Superstore.csv')
@@ -52,21 +52,25 @@ def show_filters(df):
     region_col, state_col, city_col, start_date_col, end_date_col = st.columns(5)
 
     # Get unique values from dataframe
-    regions = ["Choose an option"] + sorted(df["Region"].dropna().unique().tolist())
-    states = ["Choose an option"] + sorted(df["State"].dropna().unique().tolist())
+
+
+
     cities = ["Choose an option"] + sorted(df["City"].dropna().unique().tolist())
 
     # Region filter
     with region_col:
-        selected_region = st.selectbox("Select Region", regions, key="region")
+        regions = ["Choose an option"] + sorted(df["Region"].dropna().unique().tolist())
+        selected_region = st.selectbox("Select Region", regions)
 
     # State filter
     with state_col:
-        selected_state = st.selectbox("Select State", states, key="state")
+        states = get_states_by_region(selected_region, df)
+        selected_state = st.selectbox("Select State", states)
 
     # City filter
     with city_col:
-        selected_city = st.selectbox("Pick the City", cities, key="city")
+        cities = get_city_by_states(selected_state,df)
+        selected_city =st.selectbox('Pick the city ',cities)
 
     # Start date filter
     with start_date_col:

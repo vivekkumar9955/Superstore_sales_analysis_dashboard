@@ -1,2 +1,3 @@
 #color
 #2F4F4F
+  #states = ["Choose an option"] + sorted(df["State"].dropna().unique().tolist())
