@@ -15,12 +15,11 @@ def category_view(filtered_data):
             .sort_values(by='Quantity', ascending=False)
         )
 
-        # --- Create Vertical Stacked Bar Chart ---
         fig = px.bar(
             quantity_by_cat,
-            x='Category',           # X-axis → Categories
-            y='Quantity',           # Y-axis → Quantity sold
-            color='Sub-Category',   # Stack by Sub-Category
+            x='Category',
+            y='Quantity',
+            color='Sub-Category',
             hover_name='Sub-Category',
             title='Quantity Sold by Sub-Category within Each Category',
             text='Quantity',
@@ -36,28 +35,33 @@ def category_view(filtered_data):
             plot_bgcolor='rgba(0,0,0,0)',
             paper_bgcolor='rgba(0,0,0,0)',
             legend_title_text="Sub-Category",
-            margin=dict(l=60, r=40, t=60, b=60)
+            margin=dict(l=60, r=40, t=60, b=60),
+            legend=dict(
+                orientation="h",
+                yanchor="bottom",
+                y=-0.3,
+                xanchor="center",
+                x=0.5
+            )
         )
 
+        fig.update_yaxes(tickformat=',')
         fig.update_traces(textposition='inside', textfont_size=11)
         st.plotly_chart(fig, use_container_width=True)
 
     with col2:
         st.subheader("📊 Segment Analysis by Category and Sub-Category")
 
-        # --- Group Data ---
         quantity_by_cat = (
             filtered_data.groupby(['Category', 'Sub-Category'])['Quantity']
             .sum()
             .reset_index()
         )
 
-        # --- FIXED: Use transform instead of apply ---
         quantity_by_cat['Percentage'] = quantity_by_cat.groupby('Category')['Quantity'].transform(
             lambda x: x / x.sum() * 100
         )
 
-        # --- Create 100% Stacked Bar Chart ---
         fig = px.bar(
             quantity_by_cat,
             x='Category',
@@ -79,7 +83,15 @@ def category_view(filtered_data):
             paper_bgcolor='rgba(0,0,0,0)',
             legend_title_text="Sub-Category",
             yaxis=dict(ticksuffix="%"),
-            margin=dict(l=60, r=40, t=60, b=60)
+            margin=dict(l=60, r=40, t=60, b=60),
+            legend=dict(
+                orientation="h",
+                yanchor="bottom",
+                y=-0.3,
+                xanchor="center",
+                x=0.5
+            )
         )
 
+        fig.update_traces(textposition='inside', textfont_size=11)
         st.plotly_chart(fig, use_container_width=True)
