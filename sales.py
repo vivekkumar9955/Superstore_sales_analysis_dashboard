@@ -1,13 +1,20 @@
 import streamlit as st
 import matplotlib.pyplot as plt
 import seaborn as sns
+import warnings
+
+# Suppress non-critical warnings
+warnings.filterwarnings("ignore")
 
 def sales_view(filtered_data):
     col1, col2 = st.columns([1, 1])
 
+    # ---- SALES BY CATEGORY ----
     with col1:
-        st.subheader("💰 Sales by category")
+        st.subheader("💰 Sales by Category")
+
         plt.style.use('Solarize_Light2')
+
         # Group data by Category (Sum of Sales)
         category_by_sales = (
             filtered_data.groupby("Category")["Sales"]
@@ -22,7 +29,9 @@ def sales_view(filtered_data):
             data=category_by_sales,
             x="Category",
             y="Sales",
+            hue="Category",          # ✅ Fix: avoid palette warning
             palette="pastel",
+            legend=False,            # ✅ Suppress legend duplication
             ax=ax
         )
 
@@ -32,15 +41,18 @@ def sales_view(filtered_data):
 
         # Add values on bars
         for i, v in enumerate(category_by_sales["Sales"]):
-            ax.text(i, v + 5000, f"${v:,.0f}", ha='center', fontweight='bold')
+            ax.text(i, v + 5000, f"${v:,.0f}", ha='center', fontweight='bold', fontsize=10)
 
+        plt.tight_layout()
         st.pyplot(fig)
 
+    # ---- SALES BY REGION ----
     with col2:
-        st.subheader("💰 Sales by Region")
+        st.subheader("🌍 Sales by Region")
+
         plt.style.use('Solarize_Light2')
 
-        # --- Group data by Region ---
+        # Group data by Region
         sales_by_region = (
             filtered_data.groupby("Region")["Sales"]
             .sum()
@@ -48,7 +60,7 @@ def sales_view(filtered_data):
             .sort_values(by="Sales", ascending=False)
         )
 
-        # --- Create donut chart ---
+        # Create donut chart
         fig, ax = plt.subplots(figsize=(6, 6))
 
         # Custom autopct function to show % and actual value
@@ -57,24 +69,22 @@ def sales_view(filtered_data):
             value = int(round(pct * total / 100.0))
             return f"{pct:.1f}%\n(${value:,.0f})"
 
-        # Draw the pie chart (same as before)
         wedges, texts, autotexts = ax.pie(
             sales_by_region["Sales"],
             labels=sales_by_region["Region"],
             autopct=autopct_format,
             startangle=90,
-            colors=plt.cm.Pastel1.colors,  # soft colors
+            colors=plt.cm.Pastel1.colors,  # soft pastel colors
             wedgeprops={"edgecolor": "white"}
         )
 
-        # --- Add a white circle at the center to create a "donut" effect ---
+        # Donut hole
         centre_circle = plt.Circle((0, 0), 0.70, fc='white')
         fig.gca().add_artist(centre_circle)
 
-        # --- Improve aesthetics ---
+        # Aesthetics
         ax.set_title("Sales by Region", fontsize=14, fontweight="bold")
-        ax.axis('equal')  # Equal aspect ratio ensures the pie is circular
-
-        # --- Show in Streamlit ---
+        ax.axis('equal')  # Ensures circular shape
+        plt.tight_layout()
 
         st.pyplot(fig)
