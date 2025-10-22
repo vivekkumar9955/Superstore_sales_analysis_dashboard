@@ -1,11 +1,9 @@
-streamlit
+streamlit==1.38.0
 pandas
-numpy
 plotly
-plotly.express
-matplotlib==3.5.2
-requests
-openpyxl
-xlrd
-streamlit-option-menu
+prophet==1.1.5
+scikit-learn
+cmdstanpy==1.2.0
 seaborn
+matplotlib
+numpy==1.26.4
