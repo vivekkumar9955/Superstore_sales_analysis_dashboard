@@ -1,3 +1,10 @@
-#color
-#2F4F4F
-  #states = ["Choose an option"] + sorted(df["State"].dropna().unique().tolist())
+streamlit
+pandas
+numpy
+plotly
+plotly.express
+matplotlib==3.5.2
+requests
+openpyxl
+xlrd
+streamlit-option-menu
