@@ -8,3 +8,4 @@ requests
 openpyxl
 xlrd
 streamlit-option-menu
+seaborn
