@@ -3,15 +3,24 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import warnings
 
-# Optional: Hide emoji font warnings
+# Suppress specific warnings
 warnings.filterwarnings("ignore", message="Glyph .* missing from font")
+warnings.filterwarnings(
+    "ignore",
+    category=FutureWarning,
+    message="Passing `palette` without assigning `hue` is deprecated"
+)
+
+# Set style and font globally
+plt.style.use('Solarize_Light2')
+plt.rcParams['font.family'] = 'Segoe UI Emoji'
 
 def sales_view(filtered_data):
     col1, col2 = st.columns([1, 1])
 
+    # --- Sales by Category ---
     with col1:
         st.subheader("💰 Sales by Category")
-        plt.style.use('Solarize_Light2')
 
         category_by_sales = (
             filtered_data.groupby("Category")["Sales"]
@@ -27,10 +36,11 @@ def sales_view(filtered_data):
             y="Sales",
             hue="Category",  # Added
             palette="pastel",
-            legend=False,    # Added
+            dodge=False,
             ax=ax
         )
 
+        ax.legend([], [], frameon=False)
         ax.set_title("Sales by Category", fontsize=14, fontweight='bold')
         ax.set_xlabel("Category", fontsize=12)
         ax.set_ylabel("Sales ($)", fontsize=12)
@@ -40,9 +50,9 @@ def sales_view(filtered_data):
 
         st.pyplot(fig)
 
+    # --- Sales by Region ---
     with col2:
         st.subheader("💰 Sales by Region")
-        plt.style.use('Solarize_Light2')
 
         sales_by_region = (
             filtered_data.groupby("Region")["Sales"]
