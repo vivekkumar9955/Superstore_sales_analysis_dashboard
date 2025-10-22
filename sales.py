@@ -11,7 +11,7 @@ def sales_view(filtered_data):
 
     # ---- SALES BY CATEGORY ----
     with col1:
-        st.subheader("💰 Sales by Category")
+        st.subheader("Sales by Category")
 
         plt.style.use('Solarize_Light2')
 
@@ -48,7 +48,7 @@ def sales_view(filtered_data):
 
     # ---- SALES BY REGION ----
     with col2:
-        st.subheader("🌍 Sales by Region")
+        st.subheader("Sales by Region")
 
         plt.style.use('Solarize_Light2')
 
