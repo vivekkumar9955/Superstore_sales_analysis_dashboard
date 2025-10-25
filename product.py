@@ -99,7 +99,7 @@ def product_view(filtered_data):
     # --- Display Chart ---
     st.plotly_chart(fig, use_container_width=True)
 
-    st.subheader("💸 Top 5 Least Profitable Products")
+    st.subheader("💸 Top 10 Least Profitable Products")
 
     # --- Calculate Top 5 least profitable products ---
     top_products = (
