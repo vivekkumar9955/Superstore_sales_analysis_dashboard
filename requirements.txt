@@ -7,9 +7,9 @@ seaborn==0.13.2
 plotly==5.24.1
 streamlit-option-menu==0.3.4
 
-# Forecasting
-prophet==1.1.5
-cmdstanpy==1.2.0
+# Forecasting (Streamlit Cloud-friendly)
+pystan==2.19.1.1
+fbprophet==0.7.1
 
 # Machine Learning
 scikit-learn==1.5.2
