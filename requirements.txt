@@ -1,16 +1,16 @@
 # Core packages
 streamlit==1.38.0
-pandas==2.0.3
-numpy==1.25.2
-matplotlib==3.7.2
+pandas==2.2.3
+numpy==2.1.2
+matplotlib==3.9.2
 seaborn==0.13.2
 plotly==5.24.1
-streamlit-option-menu==0.3.4
+streamlit-option-menu==0.3.6
 altair==5.3.0
 
-# Forecasting (Streamlit Cloud-friendly)
-pystan==2.19.1.1
-fbprophet==0.7.1
+# Forecasting (modern replacements for Prophet)
+cmdstanpy==1.2.4
+prophet==1.1.5   # official renamed version of fbprophet
 
 # Machine Learning
 scikit-learn==1.5.2
