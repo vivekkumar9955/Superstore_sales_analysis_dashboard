@@ -10,6 +10,7 @@ from sales import sales_view
 from trends import trends_view
 from locations import locations_view
 from category import category_view
+from product import product_view
 # --- PAGE CONFIG ---
 st.set_page_config(page_title="Superstore Sales Dashboard", page_icon="📊", layout="wide")
 
@@ -91,8 +92,7 @@ elif selected == "Category":
 
 
 elif selected == "Product":
-    st.subheader("🛍️ Product Insights")
-    st.write("Explore product-wise performance metrics here.")
+    product_view(filtered_data)
 
 elif selected == "Location":
     locations_view(filtered_data)
